@@ -2,7 +2,8 @@
   "permissions": {
     "allow": [
       "WebSearch",
-      "Bash(code:*)"
+      "Bash(code:*)",
+      "WebFetch(domain:abittechnical.work)"
     ]
   }
 }
