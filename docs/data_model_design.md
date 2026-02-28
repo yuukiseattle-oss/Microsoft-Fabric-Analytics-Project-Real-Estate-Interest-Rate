@@ -114,11 +114,22 @@ erDiagram
 ```
 
 **Silver層の変換内容：**
-1. 取引時期を日付型に変換（2024年第1四半期 → 2024-01-01）
-2. 単価計算（price / area）
+1. 取引時期を日付型に変換（「2024年第4四半期」→ 2024-10-01）
+2. 単価計算（trade_price / area）
 3. 築年数計算（2024 - building_year）
 4. 異常値除外（価格 0円〜10億円、面積 0〜1000㎡）
-5. 金利の月次集計（日次 → 月次平均）
+5. 金利の月次集計（日次 → 月次 avg/min/max/std + 前月比）
+6. マンションフィルタ（property_type = '中古マンション等' のみ抽出）
+
+**実装手段の選定（ADR）：**
+
+| 手段 | 採用 | 理由 |
+|------|------|------|
+| Dataflow Gen2 | **✅ 採用** | Lakehouse→Lakehouseのネイティブサポート、GUIでフロー可視化、Data Pipeline連携 |
+| PySpark Notebook | 不採用 | 柔軟性は高いがGUI管理が難しい |
+| SQL (Warehouse) | 不採用 | LakehouseへのWrite backに制約あり |
+
+→ 詳細仕様: [`docs/silver_transform_spec.md`](silver_transform_spec.md)
 
 ---
 
